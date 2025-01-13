@@ -1,23 +1,28 @@
 import Image from "next/image";
 import SearchForm from "../../components/SearchForm";
-import StartupCard from "@/components/StartupCard";
-import StartupTypeCard from "@/components/StartupTypeCard";
+import StartupCard, { StartupTypeCard } from "@/components/StartupCard";
+import { client } from "@/sanity/lib/client";
+import { STARTUPS_QUERY } from "@/sanity/lib/queries";
 
 export default async function Home({ searchParams }: { searchParams: Promise<{ query?: string }>}) {
   const query = (await searchParams).query;
 
-  const posts = [
-    {
-      _createdAt: new Date(),
-      views: 55,
-      author: { _id: 1, name: 'Drew' },
-      _id: 1,
-      description: "This is a dscription",
-      image: "https://images.unsplash.com/photo-1634912314704-c646c586b131?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.03&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      category: "Robots",
-      title: "we Robots",
-    },
-  ];
+  const posts = await client.fetch(STARTUPS_QUERY);
+
+  console.log(JSON.stringify(posts, null, 2));
+
+  // const posts = [
+  //   {
+  //     _createdAt: new Date(),
+  //     views: 55,
+  //     author: { _id: 1, name: 'Drew' },
+  //     _id: 1,
+  //     description: "This is a dscription",
+  //     image: "https://images.unsplash.com/photo-1634912314704-c646c586b131?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.03&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //     category: "Robots",
+  //     title: "we Robots",
+  //   },
+  // ];
   
   return (
    <>
