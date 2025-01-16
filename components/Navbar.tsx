@@ -1,7 +1,10 @@
 import { auth, signIn, signOut } from '@/auth'
+import { BadgePlus, LogOut } from 'lucide-react';
 import { redirect } from 'next/dist/server/api-utils';
 import Image from 'next/image'
 import Link from 'next/link'
+import { Avatar, AvatarFallback } from './ui/avatar';
+import { AvatarImage } from '@radix-ui/react-avatar';
 
 
 const Navbar = async () => {
@@ -15,36 +18,29 @@ const Navbar = async () => {
         </Link>
 
         <div className='flex items-center gap-5 text-black'>
-          {/* {session && session?.user ? (
-            <>
-              <Link href="/startup/create">
-              <span>Create</span></Link>
-
-              <button onClick={signOut}><span>Logout</span></button>
-            
-            <Link href={`/user/${session?.id}`}>
-              <span>{session?.user?.name}</span>
-            </Link>
-            </>
-          ) : (
-            <button onClick={signIn( provider: 'github')}>
-              <span>Login</span>
-            </button>
-          )} */
+          {
          <>
          {session && session?.user ? (
             <>
-            <Link href="/startup/create">
-            <span>Create</span></Link>
+            <Link href="/create">
+            <span className='max-sm:hidden'>Create</span>
+            <BadgePlus className='size-6 sm:hidden' />
+            </Link>
 
             <form action={async () => {
               'use server';
             await signOut('/')}}>
-              <button type='submit'>Logout</button>
+              <button type='submit'><span className='max-sm:hidden'>LogOut</span>
+              <LogOut className='size-6 sm:hidden text-red-500' />
+              </button>
             </form>
           
           <Link href={`/user/${session?.id}`}>
-            <span>{session?.user?.name}</span>
+            <Avatar className='size-10'>
+              <AvatarImage src={session?.user?.image || ''} 
+              alt={session?.user?.name || ''} />
+              <AvatarFallback>AV</AvatarFallback>
+            </Avatar>
           </Link>
           </>
          ) : 
